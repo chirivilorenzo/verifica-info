@@ -51,35 +51,38 @@
 
                 //metto le informazioni che si trovano su una linea dentro ad un'array
                 $linea = explode(";", $tmp[$i]);
+                if($linea[0] != ""){
 
-                //se l'untente è stato trovato nel file, incrementa il num di prenotazioni
-                if($linea[0] == $this->nome && $linea[1] == $this->cognome && $linea[2] == $this->numTelefono){
-
-                    //flag che serve per capire se il file dovrà essere modificato
-                    //(ovvero incrementare il suo numero di prenotazioni fatte)
-                    $flag = true;
-
-                    //prendo il numero di prenotazioni dal file, lo incremento di uno e lo rimetto nell'array $linea
-                    $numPrenotazioni = intval($linea[3]);
-                    $numPrenotazioni++;
-                    $linea[3] = $numPrenotazioni;
-
-                    //aggiungo la nuova linea nella variabile che contiene il contenuto del nuovo file
-                    $nuovoFile .= $linea[0] . ";" . $linea[1] . ";" . $linea[2] . ";" . $linea[3] . "\n";
-                }
-                else{
-                    $nuovoFile .= $linea[0] . ";" . $linea[1] . ";" . $linea[2] . ";" . $linea[3] . "\n";
+                    //se l'untente è stato trovato nel file, incrementa il num di prenotazioni
+                    if($linea[0] == $this->nome && $linea[1] == $this->cognome && $linea[2] == $this->numTelefono){
+    
+                        //flag che serve per capire se il file dovrà essere modificato
+                        //(ovvero incrementare il suo numero di prenotazioni fatte)
+                        $flag = true;
+    
+                        //prendo il numero di prenotazioni dal file, lo incremento di uno e lo rimetto nell'array $linea
+                        $numPrenotazioni = intval($linea[3]);
+                        $numPrenotazioni++;
+                        $linea[3] = $numPrenotazioni;
+    
+                        //aggiungo la nuova linea nella variabile che contiene il contenuto del nuovo file
+                        $nuovoFile .= $linea[0] . ";" . $linea[1] . ";" . $linea[2] . ";" . $linea[3] . "\n";
+                    }
+                    else{
+                        $nuovoFile .= $linea[0] . ";" . $linea[1] . ";" . $linea[2] . ";" . $linea[3] . "\n";
+                    }
                 }
             }
 
             //se entrati nel primo if (utente trovato), modifica il file con il nuovo numero di prenotazione
             if($flag){
-                $this->aggiornaFile($contenuto, $nomeFile);
+                $this->aggiornaFile($nuovoFile, $nomeFile);
             }
 
             //se l'utente non è stato trovato, lo aggiungo nel file
             else{
-                $contenuto .= $this->nome . ";" . $this->cognome . ";". $this->numTelefono . ";". "0" . "\n";
+                $contenuto .= $this->nome . ";" . $this->cognome . ";". $this->numTelefono . ";". "1" . "\n";
+                $numPrenotazioni = 1;
                 $this->aggiornaFile($contenuto, $nomeFile);
             }
 
